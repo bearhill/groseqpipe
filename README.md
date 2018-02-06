@@ -5,7 +5,7 @@ cutadapt/bowtie2/Homer.
 Usage:
 1. Make a directory of your project. 
 2. Copy your fastq files into this directory.
-3. Git lone this groseqpipe into your directory.
+3. Git clone or download this groseqpipe into your directory.
 4. Edit the first line of groseqpipe/gromapping.sh. Change YOUR_DIRECTORY to the full path of your project directory.
 5. Edit the `#SBATCH --mail-user=` line. Change the email address to your own one.
 6. Edit the `#SBATCH -t` line according to your file size. One fastq file needs about 2 hours.
