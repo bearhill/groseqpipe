@@ -50,8 +50,8 @@ mkdir bigwig
 mkdir Homer.tags
 for i in `ls fastq/`
 do
-	cutadapt --nextseq-trim=20 -o fastq/${i%.f*}_trimed.fastq fastq/$i
-	cutadapt -a 'A{100}' fastq/${i%.f*}_trimed.fastq > fastq/${i%.f*}_trimed2.fastq
+	cutadapt -a 'A{19}' --overlap 10 -m 20 -o fastq/${i%.f*}_trimed.fastq fastq/$i
+	cutadapt --nextseq-trim=20 -m 20 -o fastq/${i%.f*}_trimed2.fastq fastq/${i%.f*}_trimed.fastq
 	rm fastq/${i%.f*}_trimed.fastq
 	bowtie2 -5 2 -p 60 -x $WORK/bowtie_index/hg19 fastq/${i%.f*}_trimed2.fastq | samtools view -1 | samtools sort > ./bam/${i%.f*}.sorted.bam
 	makeTagDirectory Homer.tags/${i%.f*}/ -tbp 3 -fragLength 100 ./bam/${i%.f*}.sorted.bam
