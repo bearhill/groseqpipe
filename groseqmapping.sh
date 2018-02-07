@@ -48,16 +48,15 @@ cp mv *.fastq fastq/
 mkdir bam
 mkdir bigwig
 mkdir Homer.tags
-for i in `ls fastq/`
+for i in `ls fastq | grep "fastq.gz"`
 do
-	cutadapt -a 'A{19}' --overlap 10 -m 20 -o fastq/${i%.f*}_trimed.fastq fastq/$i
+	cutadapt -a 'A{19}' -m 20 -o fastq/${i%.f*}_trimed.fastq fastq/$i
 	cutadapt --nextseq-trim=20 -m 20 -o fastq/${i%.f*}_trimed2.fastq fastq/${i%.f*}_trimed.fastq
 	rm fastq/${i%.f*}_trimed.fastq
 	bowtie2 -5 2 -p 60 -x $WORK/bowtie_index/hg19 fastq/${i%.f*}_trimed2.fastq | samtools view -1 | samtools sort > ./bam/${i%.f*}.sorted.bam
 	makeTagDirectory Homer.tags/${i%.f*}/ -tbp 3 -fragLength 100 ./bam/${i%.f*}.sorted.bam
-	makeBigWig.pl Homer.tags/${i%.f*}/ hg19 -norm 1e6 -strand -webdir ./bigwig -url https://s3.amazonaws.com/test
+	makeBigWig.pl Homer.tags/${i%.f*}/ hg19 -norm 1e6 -strand -webdir ./bigwig -url https://s3.amazonaws.com/
     makeUCSCfile Homer.tags/${i%.f*}/ -norm 1e6 -strand separate -o auto
 done
-
 cat err | grep -v "Warning" | grep -v "Generating" > Log.txt
 rm err

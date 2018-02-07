@@ -17,6 +17,11 @@ ref <- args[8]
 
 counttable <- fread(countfile,header = T,fill = T)
 res.table <- DefExp(counttable,groups,ref)
+res.table$feature <- NULL
+res.table$score <- NULL
+res.table$frame <- NULL
+res.table$level2 <- NULL
+res.table$havana_gene <- NULL
 
 # write result ------------------------------------------------------------
 write.table(res.table,file = 'DESeq2result.txt',quote = F,row.names = F)
